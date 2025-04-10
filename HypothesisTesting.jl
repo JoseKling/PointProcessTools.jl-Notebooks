@@ -81,13 +81,15 @@ else
 end;
 
 # ╔═╡ 91e41471-1242-4886-acbb-ddec12ae955e
+if !isnothing(record)
 md"""
 If you want to customize the plot, check this box. $(@bind customize CheckBox(default=false))\
 These changes will apply to the last plot as well.
 """
+end
 
 # ╔═╡ 52d0c74b-aa34-43a9-ad3c-ae412ab5fa6e
-if customize
+if !isnothing(record) && customize
 	md"""
 	Invert the x-axis? (past represented by negative values) $(@bind rev CheckBox(default=false))\
 	Choose the time unit of the plot:\
@@ -121,27 +123,31 @@ if rec !== nothing
 end
 
 # ╔═╡ 7a6e46e2-951d-40b9-802e-09d35a8b1233
+if !isnothing(record)
 md"""
 Choose the model for the hypothesis testing algorithm.
-"""
 
-# ╔═╡ 41984395-8a49-4cce-8257-92c519ee9da9
-@bind model Select(["hp" => "Homogeneous Poisson",
+$(@bind model Select(["hp" => "Homogeneous Poisson",
 					"ip" => "Inhomogeneous Poisson",
 					"hh" => "Homogeneous Hawkes",
-					"ih" => "Inhomogeneous Hawkes"])
+					"ih" => "Inhomogeneous Hawkes"]))
+"""
+end
 
 # ╔═╡ a955748b-060c-4775-816e-519926fc3412
+if !isnothing(record)
 md"""
 Choose the distance for the hypothesis testing algorithm.
 
 The Laplace Transform L2 distance performs best, but the Kolmogorov-Smirnov distance
 allows visualization with the KS-plot.
-"""
 
-# ╔═╡ ce527ada-5242-4829-bdc0-7094e9cd985b
-@bind dist Select(["lp" => "Laplace transform L2 distance",
-					"ks" => "Kolmogorov-Smirnov distance"])
+$(@bind dist Select(["lp" => "Laplace transform L2 distance",
+					 "ks" => "Kolmogorov-Smirnov distance"]))
+"""
+else
+	dist = nothing
+end
 
 # ╔═╡ e84f3f80-8278-4ba8-aeee-a0c2f93d3ff1
 if rec !== nothing
@@ -157,7 +163,9 @@ if dist == "ks"
 end
 
 # ╔═╡ 2e9d6fd6-a507-48e9-a7e9-dab1642e28d7
-md"Here is the record along with the estimated intensity"
+if !isnothing(rec)
+	md"Here is the record along with the estimated intensity"
+end
 
 # ╔═╡ fd0e52bf-646c-43f9-b405-80c9ef760879
 if rec !== nothing
@@ -1808,9 +1816,7 @@ version = "1.4.1+2"
 # ╟─91e41471-1242-4886-acbb-ddec12ae955e
 # ╟─52d0c74b-aa34-43a9-ad3c-ae412ab5fa6e
 # ╟─7a6e46e2-951d-40b9-802e-09d35a8b1233
-# ╟─41984395-8a49-4cce-8257-92c519ee9da9
 # ╟─a955748b-060c-4775-816e-519926fc3412
-# ╟─ce527ada-5242-4829-bdc0-7094e9cd985b
 # ╟─e84f3f80-8278-4ba8-aeee-a0c2f93d3ff1
 # ╟─2dd1c98a-c853-48d9-9fa8-0dd9cc2601ba
 # ╟─2e9d6fd6-a507-48e9-a7e9-dab1642e28d7
