@@ -13,34 +13,27 @@ with a simple GUI.
 ## Installation
 
 1. Install Julia
-    Follow the instructions from the [JuliaLang](https://julialang.org/downloads/) site
+    Follow the instructions from the [JuliaLang](https://julialang.org/downloads/) site.
 
-2. (a) Clone this repository. In the terminal, type
+2. Clone this repository. In the terminal, type
 ```bash
 cd path/to/clone
-git clone ????
-```
-or
-
-2. (b) Download the notebook files (.jl extension) manually to some folder of your choice
-
-3. Start julia. In the terminal, type
-```bash
-julia
-```
-
-4. The julia REPL will start (you can see the line starting with `julia>`). Add the `Pluto` package
-```julia
-using Pkg
-Pkg.add(Pluto)
+git clone https://github.com/JoseKling/PointProcessTools.jl-Notebooks.git
 ```
 
 ## Usage
 
-1. In Julia, run the commands
-```julia
-using Pluto
-Pluto.run()
+1. Navigate to the cloned repository, where the notebook files are, and run
+```bash
+julia start.jl
 ```
 
-2. A browser window will open. In 'Open a notebook', browse the notebook you want to open
+2. Open your browser and type the address 'localhost:8080'.
+
+3. When you are done, close the browser and type `ctrl-c` to stop the process in the terminal.
+
+**Note 1:** The first time you run it should take some time to download and precompile all
+the packages. It will be faster the other times.
+
+**Note 2:** The notebooks are automatically updated when some change is made to the
+GitHub repository.
