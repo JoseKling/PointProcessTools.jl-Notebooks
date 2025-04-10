@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: PointProcessTools.jl
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: José
+    family-names: Kling
+    email: jkling@geomar.de
+    affiliation: GEOMAR Helmholtz Centre for Ocean Research Kiel
+    orcid: 'https://orcid.org/0000-0002-7783-8114'
+  - family-names: Vetter
+    given-names: Mathias
+    email: vetter@math.uni-kiel.de
+    affiliation: Christian-Albrechts-Universität zu Kiel
+    orcid: 'https://orcid.org/0000-0002-8182-3193'
+  - orcid: 'https://orcid.org/0000-0001-5865-3272'
+    affiliation: GEOMAR Helmholtz Centre for Ocean Research Kiel
+    given-names: Julie Christin
+    family-names: Schindlbeck-Belo
+    email: jbelo@geomar.de
+  - orcid: 'https://orcid.org/0000-0001-6307-8428'
+    given-names: Marion
+    family-names: Jegen
+    email: mjegen@geomar.de
+    affiliation: GEOMAR Helmholtz Centre for Ocean Research Kiel
+  - orcid: 'https://orcid.org/0000-0002-0645-3399'
+    given-names: ' Steffen'
+    family-names: Kutterolf
+    email: skutterolf@geomar.de
+    affiliation: GEOMAR Helmholtz Centre for Ocean Research Kiel
+identifiers:
+  - type: doi
+    value: 10.3289/SW_4_2024
+repository-code: 'https://git.geomar.de/open-source/pointprocesstools.jl'
+abstract: >-
+    This julia package implements various tools for working with simple,
+    non-marked, one dimensional point processes. In special it implements a
+    bootstrap-based goodness-of-fit test for parametric models.
+license: MIT
+date-released: '2024-05-24'

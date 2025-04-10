@@ -186,7 +186,7 @@ $(DownloadButton(sprint(CSV.write, pers), "periodicities.csv"))
 end
 
 # ╔═╡ ef4a50dd-14c3-42da-88f4-851a4400aa2d
-record !== nothing && sort(pers, :Power, rev=true)[1:10, [:Period, :Power]]
+record !== nothing && sort(pers, :Power, rev=true)[1:10, [:Period, :Power]];
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
