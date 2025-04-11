@@ -33,8 +33,19 @@ This notebook is part of the [PointProcessTools.jl](https://git.geomar.de/open-s
 
 # ╔═╡ 1bfb9d78-6838-49c9-97d0-8a7abc9a76ac
 md"""
-Provide the csv file with the event record: $(@bind record_file FilePicker())\
-If there also proxy data, provide it here: $(@bind proxy_file FilePicker())
+# Frequency analysis
+
+## Upload data
+
+The event record must be in a csv file. The first column must contain the ages and must have a name in the first row (the name itself does not matter).\
+Excel has the option to save any table in csv format.\
+**Upload the csv file with the event record: $(@bind record_file FilePicker())**
+"""
+
+# ╔═╡ 65021ca4-236c-4056-b674-771169497861
+md"""
+The proxy must contain two columns with names in the first row (again, the names do no matter). The first column contains ages of proxy measurements and the second column the proxy value corresponding to this age.\
+**If there also proxy data, provide it here: $(@bind proxy_file FilePicker())**
 """
 
 # ╔═╡ d6d903d0-f3af-4c39-b0b3-4eaf93af312b
@@ -82,8 +93,10 @@ end;
 # ╔═╡ f4ed3b06-43ea-4847-929e-c39d71546bc3
 if rec !== nothing 
 	md"""
+	### Customize plot?
+	
 	If you want to customize the plot, check this box. $(@bind customize CheckBox(default=false))\
-	These changes will apply to the last plot as well.
+	Appplicable changes will apply to the last plot as well.
 	"""
 end
 
@@ -98,7 +111,7 @@ if rec !== nothing && customize
 	Choose the spacing between the x ticks:\
 	$(@bind spacing confirm(TextField(default="100000")))\
 	Choose a transformation for the event record:\
-	$(@bind smooth_method Select(["None" => "None", "gaussian" => "Gaussian", "movmean" => "Moving Average"]))\
+	$(@bind smooth_method Select(["None" => "None", "gaussian" => "Gaussian (nicer, but slower than moving average)", "movmean" => "Moving Average (faster, but not as nice as Gaussian)"]))\
 	Choose a time window for the smoothing method above (if different than "None"):\
 	$(@bind smooth_window confirm(TextField(default="3000")))
 	"""
@@ -124,21 +137,29 @@ end
 # ╔═╡ 8b233636-9358-499a-8591-7153163d4dd3
 if rec !== nothing 
 md"""
+## Frequency analysis settings
+	
 There are several choices on how to run the frequency analysis.
 
 Choose the range of periodicities to be returned:\
 $(@bind comp1 TextField(default=(@sprintf "%.0f" (span(rec) / n_events(rec)))))
 $(@bind comp2 TextField(default=(@sprintf "%.0f" (span(rec)))))
 
-If you want to compare the frequencies present in the data with frequencies from simulated data, choose a model for the simulations.\
 """
-	
+end
+
+# ╔═╡ 918f6572-7383-4e2b-9f93-652da3cae101
+if !isnothing(record)
 	if proxy === nothing
 		md"""
+		If you want to compare the frequencies present in the data with frequencies from simulated data, choose a model for the simulations.
+		
 		$(@bind model Select(["hp" => "Homogeneous Poisson", "hh" => "Homogeneous Hawkes", "none" => "None"]))
 		"""
 	else
 		md"""
+		If you want to compare the frequencies present in the data with frequencies from simulated data, choose a model for the simulations.
+		
 		$(@bind model Select(["hp" => "Homogeneous Poisson", "ip" => "Inhomogeneous Poisson", "hh" => "Homogeneous Hawkes", "ih" => "Inhomogeneous Hawkes", "none" => "None"]))
 		"""
 	end
@@ -158,18 +179,24 @@ end
 # ╔═╡ f2ae4ff7-e5ec-4b03-bafb-e7a634f9298a
 if record !== nothing
 	if model == "none"
-		periodogram(rec, (parse(Float64, comp1), parse(Float64, comp2)))
+		periodogram(rec, (parse(Float64, comp1), parse(Float64, comp2)),
+					divide=parse(Float64, divide), time_unit=t_unit)
 	elseif (model in ["ih", "ip"])
 		if proxy === nothing
 			md"""
 			**For this model a proxy must be provided. Please upload the proxy file above.**
 			"""
 		else
-			periodogram(model, rec, proxy, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims))
+			periodogram(model, rec, proxy, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
 		end
 	else
-		periodogram(model, rec, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims))
+		periodogram(model, rec, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
 	end
+end
+
+# ╔═╡ 50963f08-62d4-485e-8357-4aac54852956
+if !isnothing(record)
+	md"## Results"
 end
 
 # ╔═╡ a0d32c54-7882-4e58-954d-062571ca88ba
@@ -474,9 +501,9 @@ version = "1.15.1"
 
 [[deps.DifferentiationInterface]]
 deps = ["ADTypes", "LinearAlgebra"]
-git-tree-sha1 = "70e500f6d5d50091d87859251de7b8cd060c1cce"
+git-tree-sha1 = "e41b6696c84291c4ad15f5f6eaf071b4dfbfda06"
 uuid = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
-version = "0.6.50"
+version = "0.6.51"
 
     [deps.DifferentiationInterface.extensions]
     DifferentiationInterfaceChainRulesCoreExt = "ChainRulesCore"
@@ -706,9 +733,9 @@ version = "1.0.2"
 
 [[deps.HTTP]]
 deps = ["Base64", "CodecZlib", "ConcurrentUtilities", "Dates", "ExceptionUnwrapping", "Logging", "LoggingExtras", "MbedTLS", "NetworkOptions", "OpenSSL", "PrecompileTools", "Random", "SimpleBufferStream", "Sockets", "URIs", "UUIDs"]
-git-tree-sha1 = "c67b33b085f6e2faf8bf79a61962e7339a81129c"
+git-tree-sha1 = "f93655dc73d7a0b4a368e3c0bce296ae035ad76e"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "1.10.15"
+version = "1.10.16"
 
 [[deps.HarfBuzz_jll]]
 deps = ["Artifacts", "Cairo_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "Graphite2_jll", "JLLWrappers", "Libdl", "Libffi_jll"]
@@ -1165,7 +1192,7 @@ version = "0.7.62"
 
 [[deps.PointProcessTools]]
 deps = ["CSV", "DataFrames", "Interpolations", "LinearAlgebra", "Optim", "Printf", "Random", "RecipesBase", "Statistics", "StatsBase"]
-git-tree-sha1 = "0fd9b64592983f1196107f4d7c28c339445ee24c"
+git-tree-sha1 = "0386cfb016dc7c21c820d0cf02bdb3512000430e"
 repo-rev = "main"
 repo-url = "https://git.geomar.de/open-source/pointprocesstools.jl.git"
 uuid = "af963391-edf3-4164-85f9-7af95bb6ac47"
@@ -1576,9 +1603,9 @@ version = "1.8.6+3"
 
 [[deps.Xorg_libXau_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "e9216fdcd8514b7072b43653874fd688e4c6c003"
+git-tree-sha1 = "aa1261ebbac3ccc8d16558ae6799524c450ed16b"
 uuid = "0c0b7dd1-d40b-584c-a123-a41640f87eec"
-version = "1.0.12+0"
+version = "1.0.13+0"
 
 [[deps.Xorg_libXcursor_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libXfixes_jll", "Xorg_libXrender_jll"]
@@ -1821,6 +1848,7 @@ version = "1.4.1+2"
 # ╟─569e7ee9-0e5a-455e-9e3c-eb80ab7682f1
 # ╟─83e308f4-4f1f-11ef-3e91-efea12c96130
 # ╟─1bfb9d78-6838-49c9-97d0-8a7abc9a76ac
+# ╟─65021ca4-236c-4056-b674-771169497861
 # ╟─d6d903d0-f3af-4c39-b0b3-4eaf93af312b
 # ╟─cea9d230-ab74-428a-bf4d-7b83a9ca663f
 # ╟─0a243162-d9a1-4b11-987c-98558d77232a
@@ -1828,8 +1856,10 @@ version = "1.4.1+2"
 # ╟─f4ed3b06-43ea-4847-929e-c39d71546bc3
 # ╟─63952833-fc68-48a6-ad97-606848ad0221
 # ╟─8b233636-9358-499a-8591-7153163d4dd3
+# ╟─918f6572-7383-4e2b-9f93-652da3cae101
 # ╟─9c2479ba-21fb-4a0d-868d-802993474a21
 # ╟─f2ae4ff7-e5ec-4b03-bafb-e7a634f9298a
+# ╟─50963f08-62d4-485e-8357-4aac54852956
 # ╟─a0d32c54-7882-4e58-954d-062571ca88ba
 # ╟─83aebc72-4b31-4281-85a9-378fe638aa94
 # ╟─ef4a50dd-14c3-42da-88f4-851a4400aa2d

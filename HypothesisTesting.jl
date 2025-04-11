@@ -32,10 +32,21 @@ md"""
 This notebook is part of the [PointProcessTools.jl](https://git.geomar.de/open-source/pointprocesstools.jl) package.
 """
 
-# ╔═╡ 71fef52e-24c7-494a-bd72-b63ca5641fa2
+# ╔═╡ 269e7580-a0d4-40be-9941-8f115c4a11f7
 md"""
-Provide the csv file with the event record: $(@bind record_file FilePicker())\
-If there also proxy data, provide it here: $(@bind proxy_file FilePicker())
+# Goodness-of-fit test
+
+## Upload data
+
+The event record must be in a csv file. The first column must contain the ages and the column must have a name (the name itself does not matter) in the first row.\
+Excel has the option to save any table in csv format.\
+**Upload the csv file with the event record: $(@bind record_file FilePicker())**
+"""
+
+# ╔═╡ 2a168d0b-b8a8-40da-bd61-d3e974fa1d34
+md"""
+The proxy must contain two columns with names in the first row (again, the names do no matter). The first column contains ages of proxy measurements and the second column the proxy value corresponding to this age.\
+**If there also proxy data, provide it here: $(@bind proxy_file FilePicker())**
 """
 
 # ╔═╡ 6634e02e-2447-4096-ab15-64beba8384ba
@@ -59,8 +70,8 @@ md"""
 If you want to select only part of the record or provide an end age different than the last event in the record. provide the desired interval below.\
 By default, the process will end in the present (time = 0) and start at the time of the oldest event in the record.
 
-Select when the event record ends (in time before present) $(@bind s TextField(default=string(record.start)))\
-Select when the event record starts (in time before present) $(@bind f TextField(default=string(record.finish)))
+Select when the event record ends (in time before present) $(@bind s confirm(TextField(default=string(record.start))))\
+Select when the event record starts (in time before present) $(@bind f confirm(TextField(default=string(record.finish))))
 """
 end
 
@@ -83,6 +94,8 @@ end;
 # ╔═╡ 91e41471-1242-4886-acbb-ddec12ae955e
 if !isnothing(record)
 md"""
+### Customize plot?
+	
 If you want to customize the plot, check this box. $(@bind customize CheckBox(default=false))\
 These changes will apply to the last plot as well.
 """
@@ -99,7 +112,7 @@ if !isnothing(record) && customize
 	Choose the spacing between the x ticks:\
 	$(@bind spacing confirm(TextField(default="100000")))\
 	Choose a transformation for the event record:\
-	$(@bind smooth_method Select(["None" => "None", "gaussian" => "Gaussian", "movmean" => "Moving Average"]))\
+	$(@bind smooth_method Select(["None" => "None", "gaussian" => "Gaussian (nicer, but slower than moving average)", "movmean" => "Moving Average (faster, but not as nice as Gaussian)"]))\
 	Choose a time window for the smoothing method above (if different than "None"):\
 	$(@bind smooth_window confirm(TextField(default="3000")))
 	"""
@@ -125,7 +138,10 @@ end
 # ╔═╡ 7a6e46e2-951d-40b9-802e-09d35a8b1233
 if !isnothing(record)
 md"""
-Choose the model for the hypothesis testing algorithm.
+## Hypothesis testing settings
+
+Choose the model for the hypothesis testing algorithm.\
+For the inhomogeneous Poisson and inhomogeneous Hawkes options, a proxy must have been uploaded.
 
 $(@bind model Select(["hp" => "Homogeneous Poisson",
 					"ip" => "Inhomogeneous Poisson",
@@ -146,7 +162,12 @@ $(@bind dist Select(["lp" => "Laplace transform L2 distance",
 					 "ks" => "Kolmogorov-Smirnov distance"]))
 """
 else
-	dist = nothing
+	dist = nothing;
+end
+
+# ╔═╡ 82ba785e-20f1-46b9-bd28-7ef4be4526de
+if !isnothing(rec)
+	md"## Results"
 end
 
 # ╔═╡ e84f3f80-8278-4ba8-aeee-a0c2f93d3ff1
@@ -462,9 +483,9 @@ version = "1.15.1"
 
 [[deps.DifferentiationInterface]]
 deps = ["ADTypes", "LinearAlgebra"]
-git-tree-sha1 = "70e500f6d5d50091d87859251de7b8cd060c1cce"
+git-tree-sha1 = "e41b6696c84291c4ad15f5f6eaf071b4dfbfda06"
 uuid = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
-version = "0.6.50"
+version = "0.6.51"
 
     [deps.DifferentiationInterface.extensions]
     DifferentiationInterfaceChainRulesCoreExt = "ChainRulesCore"
@@ -694,9 +715,9 @@ version = "1.0.2"
 
 [[deps.HTTP]]
 deps = ["Base64", "CodecZlib", "ConcurrentUtilities", "Dates", "ExceptionUnwrapping", "Logging", "LoggingExtras", "MbedTLS", "NetworkOptions", "OpenSSL", "PrecompileTools", "Random", "SimpleBufferStream", "Sockets", "URIs", "UUIDs"]
-git-tree-sha1 = "c67b33b085f6e2faf8bf79a61962e7339a81129c"
+git-tree-sha1 = "f93655dc73d7a0b4a368e3c0bce296ae035ad76e"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
-version = "1.10.15"
+version = "1.10.16"
 
 [[deps.HarfBuzz_jll]]
 deps = ["Artifacts", "Cairo_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "Graphite2_jll", "JLLWrappers", "Libdl", "Libffi_jll"]
@@ -1153,7 +1174,7 @@ version = "0.7.62"
 
 [[deps.PointProcessTools]]
 deps = ["CSV", "DataFrames", "Interpolations", "LinearAlgebra", "Optim", "Printf", "Random", "RecipesBase", "Statistics", "StatsBase"]
-git-tree-sha1 = "0fd9b64592983f1196107f4d7c28c339445ee24c"
+git-tree-sha1 = "0386cfb016dc7c21c820d0cf02bdb3512000430e"
 repo-rev = "main"
 repo-url = "https://git.geomar.de/open-source/pointprocesstools.jl.git"
 uuid = "af963391-edf3-4164-85f9-7af95bb6ac47"
@@ -1564,9 +1585,9 @@ version = "1.8.6+3"
 
 [[deps.Xorg_libXau_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "e9216fdcd8514b7072b43653874fd688e4c6c003"
+git-tree-sha1 = "aa1261ebbac3ccc8d16558ae6799524c450ed16b"
 uuid = "0c0b7dd1-d40b-584c-a123-a41640f87eec"
-version = "1.0.12+0"
+version = "1.0.13+0"
 
 [[deps.Xorg_libXcursor_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libXfixes_jll", "Xorg_libXrender_jll"]
@@ -1808,7 +1829,8 @@ version = "1.4.1+2"
 # ╔═╡ Cell order:
 # ╟─3b3b5edc-7ccb-4f0c-8e97-ccc32398051b
 # ╟─115ff07e-4d8c-11ef-23f5-673c44c9ec93
-# ╟─71fef52e-24c7-494a-bd72-b63ca5641fa2
+# ╟─269e7580-a0d4-40be-9941-8f115c4a11f7
+# ╟─2a168d0b-b8a8-40da-bd61-d3e974fa1d34
 # ╟─6634e02e-2447-4096-ab15-64beba8384ba
 # ╟─af67e281-1bf2-4635-9fd6-eb1006b40617
 # ╟─8aa45175-ab25-476d-8a55-ac622c74fd3a
@@ -1817,6 +1839,7 @@ version = "1.4.1+2"
 # ╟─52d0c74b-aa34-43a9-ad3c-ae412ab5fa6e
 # ╟─7a6e46e2-951d-40b9-802e-09d35a8b1233
 # ╟─a955748b-060c-4775-816e-519926fc3412
+# ╟─82ba785e-20f1-46b9-bd28-7ef4be4526de
 # ╟─e84f3f80-8278-4ba8-aeee-a0c2f93d3ff1
 # ╟─2dd1c98a-c853-48d9-9fa8-0dd9cc2601ba
 # ╟─2e9d6fd6-a507-48e9-a7e9-dab1642e28d7
