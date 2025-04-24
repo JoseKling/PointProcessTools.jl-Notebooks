@@ -15,15 +15,24 @@ with a simple GUI.
 1. Install Julia
     Follow the instructions from the [JuliaLang](https://julialang.org/downloads/) site.
 
-2. Clone this repository. In the terminal, type
-```bash
-cd path/to/clone
-git clone https://github.com/JoseKling/PointProcessTools.jl-Notebooks.git
-```
+2. Download all the files
+
+    i. With [git](https://git-scm.com/) 
+
+    Clone this repository. In the terminal, type
+    ```bash
+    cd path/to/download
+    git clone https://github.com/JoseKling/PointProcessTools.jl-Notebooks.git
+    ```
+
+    ii. Manually
+
+    Click the green 'Code' button at the top of this page and 'Download ZIP'.
+    Unpack the .zip file in the desired folder.
 
 ## Usage
 
-1. Navigate to the cloned repository, where the notebook files are, and run
+1. Navigate to the folder with the files and, from the terminal, run
 ```bash
 julia start.jl
 ```
@@ -33,7 +42,15 @@ julia start.jl
 3. When you are done, close the browser and type `ctrl-c` to stop the process in the terminal.
 
 **Note 1:** The first time you run it should take some time to download and precompile all
-the packages. It will be faster the other times.
+the packages. It will be faster the next times.
 
-**Note 2:** The notebooks are automatically updated when some change is made to the
-GitHub repository.
+**Note 2:** The notebooks are automatically updated when some change is made to
+this GitHub repository. If you don't want that, you can replace the line
+```julia
+PlutoSliderServer.run_git_directory("./";
+```
+with
+```julia
+PlutoSliderServer.run_directory("./";
+```
+in the file `start.jl`.
