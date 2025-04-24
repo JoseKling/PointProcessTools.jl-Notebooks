@@ -13,9 +13,10 @@ with a simple GUI.
 ## Installation
 
 1. Install Julia
+
     Follow the instructions from the [JuliaLang](https://julialang.org/downloads/) site.
 
-2. Download all the files
+3. Download all the files
 
     i. With [git](https://git-scm.com/) 
 
