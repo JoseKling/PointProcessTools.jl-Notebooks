@@ -91,7 +91,7 @@ else
 end;
 
 # ╔═╡ f4ed3b06-43ea-4847-929e-c39d71546bc3
-if rec !== nothing 
+if rec !== nothing
 	md"""
 	### Customize plot?
 	
@@ -179,18 +179,30 @@ end
 # ╔═╡ f2ae4ff7-e5ec-4b03-bafb-e7a634f9298a
 if record !== nothing
 	if model == "none"
-		periodogram(rec, (parse(Float64, comp1), parse(Float64, comp2)),
-					divide=parse(Float64, divide), time_unit=t_unit)
+		if customize
+			periodogram(rec, (parse(Float64, comp1), parse(Float64, comp2)),
+						divide=parse(Float64, divide), time_unit=t_unit)
+		else
+			periodogram(rec, (parse(Float64, comp1), parse(Float64, comp2)))
+		end
 	elseif (model in ["ih", "ip"])
 		if proxy === nothing
 			md"""
 			**For this model a proxy must be provided. Please upload the proxy file above.**
 			"""
 		else
-			periodogram(model, rec, proxy, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
+			if customize
+				periodogram(model, rec, proxy, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
+			else
+				periodogram(model, rec, proxy, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims))
+			end
 		end
 	else
-		periodogram(model, rec, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
+		if customize
+			periodogram(model, rec, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims), divide=parse(Float64, divide), time_unit=t_unit)
+		else
+			periodogram(model, rec, (parse(Float64, comp1), parse(Float64, comp2)), quantiles=percs, n_sims=Int(n_sims))
+		end
 	end
 end
 
