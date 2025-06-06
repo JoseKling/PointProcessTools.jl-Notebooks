@@ -213,13 +213,13 @@ end
 
 # ╔═╡ a0d32c54-7882-4e58-954d-062571ca88ba
 if record !== nothing 
-	pers = periodicities(rec, (parse(Float64, comp1), parse(Float64, comp2)))
+	pers = sort(periodicities(rec, (parse(Float64, comp1), parse(Float64, comp2))), :Power, rev=true)
 end
 
 # ╔═╡ 83aebc72-4b31-4281-85a9-378fe638aa94
 if record !== nothing
 	md"""
-Here are the 10 largest components. You can also download the whole table as a csv file.
+Here is the table with all the components sorted by Power. You can also download the whole table as a csv file.
 $(DownloadButton(sprint(CSV.write, pers), "periodicities.csv"))
 """
 end
