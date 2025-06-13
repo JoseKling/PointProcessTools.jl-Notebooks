@@ -14,7 +14,7 @@ with a simple GUI.
 
 1. Install Julia
 
-    Follow the instructions from the [JuliaLang](https://julialang.org/downloads/) site.
+    Follow the instructions from the [JuliaLang](https://julialang.org/install/) site.
 
 3. Download all the files
 
