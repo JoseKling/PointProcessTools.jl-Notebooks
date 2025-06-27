@@ -48,10 +48,10 @@ the packages. It will be faster the next times.
 **Note 2:** The notebooks are automatically updated when some change is made to
 this GitHub repository. If you don't want that, you can replace the line
 ```julia
-PlutoSliderServer.run_git_directory("./";
+PlutoSliderServer.run_git_directory("./");
 ```
 with
 ```julia
-PlutoSliderServer.run_directory("./";
+PlutoSliderServer.run_directory("./");
 ```
 in the file `start.jl`.
