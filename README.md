@@ -18,7 +18,7 @@ with a simple GUI.
 
 3. Download all the files
 
-    i. With [git](https://git-scm.com/) 
+    i. **With [git](https://git-scm.com/)** 
 
     Clone this repository. In the terminal, type
     ```bash
@@ -26,7 +26,7 @@ with a simple GUI.
     git clone https://github.com/JoseKling/PointProcessTools.jl-Notebooks.git
     ```
 
-    ii. Manually
+    ii. **Manually**
 
     Click the green 'Code' button at the top of this page and 'Download ZIP'.
     Unpack the .zip file in the desired folder.
