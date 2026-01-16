@@ -10,13 +10,11 @@ with a simple GUI.
 
 [José Carlos Fontanesi Kling](https://github.com/josekling)
 
-## Installation
+## Usage
 
-1. Install Julia
+There are two alternatives: with a Julia installation or on a Docker container.
 
-    Follow the instructions from the [JuliaLang](https://julialang.org/install/) site.
-
-3. Download all the files
+1. Download all the files
 
     i. **With [git](https://git-scm.com/)** 
 
@@ -31,16 +29,31 @@ with a simple GUI.
     Click the green 'Code' button at the top of this page and 'Download ZIP'.
     Unpack the .zip file in the desired folder.
 
-## Usage
+### Julia
 
-1. Navigate to the folder with the files and, from the terminal, run
+2. Install Julia
+
+    Follow the instructions from the [JuliaLang](https://julialang.org/install/) site.
+
+3. Navigate to the folder with the files and, from the terminal, run
 ```bash
 julia start.jl
 ```
 
-2. Open your browser and type the address 'localhost:8080'.
+4. Open your browser and type the address 'localhost:8080'.
 
-3. When you are done, close the browser and type `ctrl-c` to stop the process in the terminal.
+5. When you are done, close the browser and type `ctrl-c` to stop the process in the terminal.
+
+### Docker
+
+2. Install [Docker](https://www.docker.com/get-started/)
+
+3. Build the container and then run
+
+```bash
+docker build -t pluto-slider-app .
+docker run -it --rm -p 8080:8080 my-julia-app
+```
 
 **Note 1:** The first time you run it should take some time to download and precompile all
 the packages. It will be faster the next times.
